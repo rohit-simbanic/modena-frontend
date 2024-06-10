@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+const path = require("path");
 
 const config: Config = {
   darkMode: "class",
@@ -10,9 +11,8 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        banner: `url('${path.resolve(__dirname, "public/images/banner.jpg")}')`,
+        hight: "h-full",
       },
       colors: {
         teal: {
@@ -21,6 +21,7 @@ const config: Config = {
         "yellow-500": "#f5b623",
         "gray-900": "#1a202c",
         "gray-100": "#f7fafc",
+        primary: "#3ab984",
       },
       borderRadius: {
         none: "0",
@@ -36,6 +37,9 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-opensans)"],
         mono: ["var(--font-roboto-mono)"],
+      },
+      boxShadow: {
+        insetcustom: "inset 0 0 0 2000px rgba(0, 0,0, 0.56)",
       },
     },
   },

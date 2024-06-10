@@ -4,6 +4,9 @@ import { Open_Sans, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { AuthProvider } from "@/contexts/auth-provider";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -23,6 +26,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      easing: "ease-out-cubic",
+    });
+  }, []);
   return (
     <html
       lang="en"
@@ -38,6 +47,7 @@ export default function RootLayout({
         <AuthProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </AuthProvider>
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
       </body>
     </html>
   );

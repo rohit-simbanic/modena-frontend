@@ -1,6 +1,9 @@
 import { FC } from "react";
 import Image from "next/image";
-
+import card_one from "@/public/images/footer-card-1.jpg";
+import card_two from "@/public/images/footer-card-2.jpg";
+import card_three from "@/public/images/footer-card-3.jpg";
+import footer_logo from "@/public/images/footer-logo.png";
 // Social Icon List
 const socialIcons = [
   { className: "fa-instagram", label: "Instagram" },
@@ -18,9 +21,9 @@ const Footer: FC = () => {
         <div className="grid sm:grid-cols-2 md:grid-cols-3 text-center md:text-left lg:grid-cols-5 my-10 px-5 gap-6">
           <div className="text-white">
             <Image
-              src="/images/banner-Image.png"
+              src={footer_logo}
               alt="blog img"
-              width={120}
+              width={60}
               height={30}
               className="my-6 mx-auto md:mx-0"
               style={{ filter: "invert(1) brightness(0)" }}
@@ -64,7 +67,7 @@ const Footer: FC = () => {
         <hr className="h-[1px] bg-gray-500 border-0 w-[100%] max-w-[1500px]" />
       </div>
       <p className="text-[16px] p-5 md:mx-20 text-white underline text-center">
-        Buy Template | Image show | Made By Prakash Pal | Visit My Templates |
+        Buy Template | Image show | Made By Simbanic | Visit My Templates |
         Powered By Simbanic
       </p>
     </div>
@@ -104,21 +107,17 @@ const FooterProperties: FC = () => (
   <div className="text-white">
     <h1 className="text-[17px] font-semibold my-5">LATEST PROPERTIES</h1>
     <div className="grid gap-4">
-      <PropertyCard src="/images/card-1.jpg" title="HOUSE" price="$500,000" />
+      <PropertyCard src={card_one} title="HOUSE" price="$500,000" />
       <Divider />
-      <PropertyCard src="/images/card-2.jpg" title="OFFICE" price="$200,000" />
+      <PropertyCard src={card_two} title="OFFICE" price="$200,000" />
       <Divider />
-      <PropertyCard
-        src="/images/card-3.jpg"
-        title="APARTMENT"
-        price="$300,000"
-      />
+      <PropertyCard src={card_three} title="APARTMENT" price="$300,000" />
     </div>
   </div>
 );
 
 // PropertyCard Component
-const PropertyCard: FC<{ src: string; title: string; price: string }> = ({
+const PropertyCard: FC<{ src: any; title: string; price: string }> = ({
   src,
   title,
   price,
@@ -127,8 +126,8 @@ const PropertyCard: FC<{ src: string; title: string; price: string }> = ({
     <Image
       src={src}
       alt="Property"
-      width={80}
-      height={100}
+      width={500}
+      height={500}
       className="h-48 w-full lg:h-auto lg:w-20 sm:h-[100px] object-cover hover:scale-125 duration-1000"
     />
     <div className="p-4 flex flex-col justify-between leading-normal">

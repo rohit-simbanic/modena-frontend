@@ -1,30 +1,36 @@
 "use client";
 import React, { useState } from "react";
 import Banner from "./features/components/banner";
-import FeaturedListing from "./features/components/featured-listing";
-import PreConstructedProject from "./features/components/pre-constructed-project";
-import MapComponent from "./features/components/map";
-import CalculatorGrid from "./features/components/services/calculator-grid";
-import calculatorData from "../../../../data/calculator-items.json";
-import { CalculatorDataProps } from "@/types/calculator-data-types";
-import SoldProperties from "./features/components/sold-properties";
+
+import Blog from "./features/components/blog";
+import ImgBanner from "./features/components/image-banner";
+import Testimonials from "./features/components/tesimonial";
+import Pricing from "./features/components/pricing-plan";
+import DataInfoComponent from "./features/components/info-component";
+import PropertyDeals from "./features/components/property-deals";
+import Team from "./features/components/team";
+import Subscribe from "./features/components/subscribe";
+import Properties from "./features/components/properties";
+import Carousal from "./features/components/carousel-slider";
+import AboutUs from "./features/components/about";
+import PropertyCard from "./features/components/property-card";
 
 const HomePage = () => {
-  const [propertyId, setPropertyId] = useState<string | null>(null);
-  const calculatorItems: CalculatorDataProps[] =
-    calculatorData as CalculatorDataProps[];
-  const handleEdit = (id: string) => {
-    setPropertyId(id);
-  };
-
   return (
     <div>
       <Banner />
-      <FeaturedListing onEdit={handleEdit} />
-      <PreConstructedProject onEdit={handleEdit} />
-      <SoldProperties />
-      <CalculatorGrid items={calculatorItems} />
-      <MapComponent />
+      <PropertyCard />
+      <AboutUs />
+      <Carousal />
+      <Properties />
+      <Subscribe />
+      <Team />
+      <PropertyDeals />
+      <DataInfoComponent />
+      <Pricing />
+      <Testimonials />
+      <ImgBanner />
+      <Blog />
     </div>
   );
 };
