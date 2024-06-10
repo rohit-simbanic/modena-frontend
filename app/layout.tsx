@@ -26,7 +26,6 @@ export default function RootLayout({
         <AuthProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </AuthProvider>
-        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
       </body>
     </html>
   );
