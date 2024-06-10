@@ -14,8 +14,15 @@ import Properties from "./features/components/properties";
 import Carousal from "./features/components/carousel-slider";
 import AboutUs from "./features/components/about";
 import PropertyCard from "./features/components/property-card";
+import AOS from "aos";
 
 const HomePage = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      easing: "ease-out-cubic",
+    });
+  }, []);
   return (
     <div>
       <Banner />
