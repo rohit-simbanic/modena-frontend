@@ -1,10 +1,8 @@
-"use client";
-
 import { Open_Sans, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { AuthProvider } from "@/contexts/auth-provider";
-import AOS from "aos";
+
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 
@@ -26,12 +24,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      easing: "ease-out-cubic",
-    });
-  }, []);
   return (
     <html
       lang="en"

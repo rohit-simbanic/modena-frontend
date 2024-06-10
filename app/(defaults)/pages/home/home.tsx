@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Banner from "./features/components/banner";
 
 import Blog from "./features/components/blog";
