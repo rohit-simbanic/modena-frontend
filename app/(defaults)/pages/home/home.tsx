@@ -26,7 +26,11 @@ const HomePage = () => {
   return (
     <div>
       <Banner />
-      <PropertyCard />
+      <PropertyCard
+        onEdit={function (id: string): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
       <AboutUs />
       <Carousal />
       <Properties />

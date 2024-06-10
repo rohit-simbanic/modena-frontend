@@ -1,5 +1,7 @@
 "use client";
 
+import PreConstructedProject from "@/app/(defaults)/pages/home/features/components/pre-constructed-project";
+import SoldProperties from "@/app/(defaults)/pages/home/features/components/sold-properties";
 import withAuth from "@/helpers/with-auth-hoc";
 import PreConstructedPropertyForm from "@/theme/components/form/pre-constructed-property-create";
 import PropertyForm from "@/theme/components/form/property-create";
@@ -19,7 +21,7 @@ const Page = () => {
   };
   const handleClosePreconstructed = () => {
     setPropertyId(null);
-    setActiveTab(4);
+    setActiveTab(2);
   };
   const tabs = [
     {
@@ -40,6 +42,39 @@ const Page = () => {
           propertyId={propertyId}
           onClose={handleClosePreconstructed}
         />
+      ),
+    },
+    {
+      name: "Sold Properties",
+      icon: (
+        <svg
+          className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M7.824 5.937a1 1 0 0 0 .726-.312 2.042 2.042 0 0 1 2.835-.065 1 1 0 0 0 1.388-1.441 3.994 3.994 0 0 0-5.674.13 1 1 0 0 0 .725 1.688Z" />
+          <path d="M17 7A7 7 0 1 0 3 7a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V7a5 5 0 1 1 10 0v7.083A2.92 2.92 0 0 1 12.083 17H12a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a1.993 1.993 0 0 0 1.722-1h.361a4.92 4.92 0 0 0 4.824-4H17a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3Z" />
+        </svg>
+      ),
+      content: <SoldProperties />,
+    },
+    {
+      name: "Pre-constructed Properties",
+      icon: (
+        <svg
+          className="w-4 h-4 me-2 text-gray-400 dark:text-gray-500"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
+        </svg>
+      ),
+      content: (
+        <PreConstructedProject onEdit={(id: string) => handleEdit(id, 0)} />
       ),
     },
   ];

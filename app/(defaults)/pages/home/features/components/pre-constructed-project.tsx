@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import { getCloudinaryUrl } from "@/helpers/cloudinary-image-fetch";
 import { fetchPreconstructedProperties } from "@/helpers/product-fetch";
 import { Pagination } from "@/theme/components/pagination/pagination";
+import SectionTitle from "@/theme/components/section-title/section-title";
 import { PreconstructedPropertyDetails } from "@/types/property-preconstructed-types";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -17,7 +18,8 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
   const [propertyItem, setPropertyItem] = useState<
     PreconstructedPropertyDetails[]
   >([]);
-
+  console.log("propertyItem", propertyItem);
+  console.log("pre-constructed properties", propertyItem);
   const [loadingData, setLoadingData] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
@@ -91,13 +93,10 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
   return (
     <section className="container mx-auto px-4">
       <div className="flex flex-wrap -mx-4 my-10">
-        <div className="my-5 mx-auto w-full">
-          <h1 className="text-[14px] text-center py-2 font-bold">FEATURED</h1>
-          <h1 className="text-[30px] text-center ">Best Property Deals</h1>
-          <p className="my-1 text-[15px] text-center text-gray-400">
-            Enjoy this amazing amenitie that has all you need to jump in
-          </p>
-        </div>
+        <SectionTitle
+          title="Latest For Salet Projects"
+          description="PROPERTY LISTED BY YOU"
+        />
         {loadingData ? (
           <div className="w-full text-center">
             <p>Loading...</p>
@@ -171,20 +170,18 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
             ))}
           </div>
         ) : (
-          <div className=" max-h-14 w-full mx-auto">
+          <div className=" max-h-14 container mx-auto">
             <h4 className="text-gray-600 dark:text-gray-100 text-center font-bold">
               No property listed by you yet!
             </h4>
           </div>
         )}
       </div>
-      {pathname !== "/" && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          paginate={paginate}
-        />
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        paginate={paginate}
+      />
     </section>
   );
 };

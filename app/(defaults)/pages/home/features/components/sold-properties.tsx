@@ -1,46 +1,38 @@
 "use client";
 
+import { Pagination } from "@/theme/components/pagination/pagination";
+import SectionTitle from "@/theme/components/section-title/section-title";
+import React, { useEffect, useState } from "react";
+
+import { fetchProperties } from "@/helpers/product-fetch";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-provider";
 import { getCloudinaryUrl } from "@/helpers/cloudinary-image-fetch";
-import { fetchPreconstructedProperties } from "@/helpers/product-fetch";
-import { Pagination } from "@/theme/components/pagination/pagination";
-import { PreconstructedPropertyDetails } from "@/types/property-preconstructed-types";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-interface PreConstructedProjectProps {
-  onEdit: (id: string) => void;
-}
-const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
-  onEdit,
-}) => {
-  const [propertyItem, setPropertyItem] = useState<
-    PreconstructedPropertyDetails[]
-  >([]);
+import { PreconstructedPropertyDetails } from "@/types/property-preconstructed-types";
+import { PropertyDetails } from "@/types/property-card-types";
 
+const SoldProperties = () => {
+  const [property, setProperty] = useState<PreconstructedPropertyDetails[]>([]);
   const [loadingData, setLoadingData] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
-  const totalPages = Math.ceil(propertyItem.length / itemsPerPage);
+  const totalPages = Math.ceil(property.length / itemsPerPage);
   const pathname = usePathname();
+  const router = useRouter();
   const { isAuthenticated, loading, logout } = useAuth();
-  console.log("isAuthenticated", isAuthenticated);
-  const handleEdit = (propertyId: string) => {
-    onEdit(propertyId);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       setLoadingData(true);
       try {
         const endpoint = isAuthenticated
           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/my-properties`
-          : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/pre-constructed-property`;
-        const data = await fetchPreconstructedProperties(endpoint);
-        const featuredProperties = data.filter(
-          (item: PreconstructedPropertyDetails) => item.category === "sale"
+          : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/properties`;
+        const data = await fetchProperties(endpoint);
+        const soldProperties = data.filter(
+          (item: PropertyDetails) => item.category === "sold"
         );
-        setPropertyItem(featuredProperties);
+        setProperty(soldProperties);
       } catch (error) {
         console.error("Error fetching properties:", error);
       } finally {
@@ -62,7 +54,7 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/pre-constructed-property/${propertyId}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/properties/${propertyId}`,
           {
             method: "DELETE",
             headers: {
@@ -73,7 +65,7 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
         if (!response.ok) {
           throw new Error("Failed to delete property");
         }
-        setPropertyItem((prevProperties) =>
+        setProperty((prevProperties) =>
           prevProperties.filter((prop) => prop.listing_id !== propertyId)
         );
       } catch (error) {
@@ -81,8 +73,7 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
       }
     }
   };
-
-  const currentItems = propertyItem.slice(
+  const currentItems = property.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -91,23 +82,16 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
   return (
     <section className="container mx-auto px-4">
       <div className="flex flex-wrap -mx-4 my-10">
-        <div className="my-5 mx-auto w-full">
-          <h1 className="text-[14px] text-center py-2 font-bold">FEATURED</h1>
-          <h1 className="text-[30px] text-center ">Best Property Deals</h1>
-          <p className="my-1 text-[15px] text-center text-gray-400">
-            Enjoy this amazing amenitie that has all you need to jump in
-          </p>
-        </div>
+        <SectionTitle
+          title="Sold Properties"
+          description="Check Sold Properties"
+        />
         {loadingData ? (
           <div className="w-full text-center">
             <p>Loading...</p>
           </div>
         ) : currentItems.length !== 0 ? (
-          <div
-            className={`grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 ${
-              pathname === "/admin" ? "xl:grid-cols-3" : "xl:grid-cols-4"
-            }  px-12 py-12`}
-          >
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  px-12 py-12">
             {currentItems.map((card, index) => (
               <div key={index} className="mb-8">
                 <div className="bg-white rounded-lg shadow-xl border border-gray-300 dark:border-gray-700">
@@ -124,7 +108,7 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
                       className="w-full h-full hover:scale-125 duration-1000"
                     />
                     <span className="absolute top-0 right-0 bg-green-500 m-2 p-1 text-[10px] font-semibold text-white">
-                      {card.category === "sale" ? "For Sale" : "Sold"}
+                      {card.category === "sold" ? "Sold" : "N/A"}
                     </span>
                   </div>
                   <div className="p-4">
@@ -152,12 +136,6 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
                     {pathname === "/admin" && (
                       <div className="flex justify-end mt-4 space-x-2">
                         <button
-                          onClick={() => handleEdit(card.listing_id)}
-                          className="text-blue-500"
-                        >
-                          Edit
-                        </button>
-                        <button
                           onClick={() => handleDelete(card.listing_id)}
                           className="text-red-500"
                         >
@@ -171,22 +149,21 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
             ))}
           </div>
         ) : (
-          <div className=" max-h-14 w-full mx-auto">
+          <div className=" max-h-14 container w-full mx-auto">
             <h4 className="text-gray-600 dark:text-gray-100 text-center font-bold">
               No property listed by you yet!
             </h4>
           </div>
         )}
       </div>
-      {pathname !== "/" && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          paginate={paginate}
-        />
-      )}
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        paginate={paginate}
+      />
     </section>
   );
 };
 
-export default PreConstructedProject;
+export default SoldProperties;
