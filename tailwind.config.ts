@@ -75,6 +75,7 @@ const config: Config = {
     "hover:bg-gray-600",
     "w-[200px]",
     "h-[100px]",
+    "max-w-3xl",
   ],
   plugins: [],
 };
