@@ -5,15 +5,21 @@ import axios from "axios";
 const RequestPasswordReset: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!email) {
+      setError("Email field cannot be blank");
+      return;
+    }
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/agent/request-password-reset`,
         { email }
       );
       setMessage(response.data.message);
+      setError("");
     } catch (error) {
       setMessage("Error sending password reset email");
     }
@@ -38,11 +44,14 @@ const RequestPasswordReset: React.FC = () => {
               id="email"
               name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (e.target.value) setError("");
+              }}
               className="block w-full px-3 py-2 mt-1 text-gray-900 placeholder-gray-500 border rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Enter your email"
             />
+            {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
           </div>
           <button
             type="submit"

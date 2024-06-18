@@ -4,13 +4,14 @@ import { Pagination } from "@/theme/components/pagination/pagination";
 import SectionTitle from "@/theme/components/section-title/section-title";
 import React, { useEffect, useState } from "react";
 
-import { fetchProperties } from "@/helpers/product-fetch";
+import { fetchAllProperties } from "@/helpers/product-fetch";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-provider";
 import { getCloudinaryUrl } from "@/helpers/cloudinary-image-fetch";
 import Image from "next/image";
 import { PreconstructedPropertyDetails } from "@/types/property-preconstructed-types";
 import { PropertyDetails } from "@/types/property-card-types";
+import { truncateText } from "@/helpers/utils";
 
 const SoldProperties = () => {
   const [property, setProperty] = useState<PreconstructedPropertyDetails[]>([]);
@@ -28,7 +29,7 @@ const SoldProperties = () => {
         const endpoint = isAuthenticated
           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/my-properties`
           : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/properties`;
-        const data = await fetchProperties(endpoint);
+        const data = await fetchAllProperties(endpoint);
         const soldProperties = data.filter(
           (item: PropertyDetails) => item.category === "sold"
         );
@@ -82,13 +83,34 @@ const SoldProperties = () => {
   return (
     <section className="container mx-auto px-4">
       <div className="flex flex-wrap -mx-4 my-10">
-        <SectionTitle
-          title="Sold Properties"
-          description="Check Sold Properties"
-        />
+        <SectionTitle title="Sold Properties" description="" />
         {loadingData ? (
-          <div className="w-full text-center">
-            <p>Loading...</p>
+          <div className="container">
+            <div className="flex flex-wrap -mx-4 my-10">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div
+                  className={`w-full ${
+                    pathname === "/admin"
+                      ? "lg:w-full xl:w-1/3 "
+                      : "xl:w-1/4 lg:w-1/3 md:w-1/2"
+                  } px-4 mb-8`}
+                  key={index}
+                >
+                  <div key={index} className="border border-gray-200 p-4">
+                    <div className="animate-pulse space-y-2">
+                      <div className="bg-gray-200 h-48"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-16 bg-gray-200 w-full"></div>
+                        <div className="space-x-2 flex">
+                          <div className="h-8 bg-gray-200 w-full"></div>
+                          <div className="h-8 bg-gray-200 w-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : currentItems.length !== 0 ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  px-12 py-12">
@@ -119,7 +141,7 @@ const SoldProperties = () => {
                       ${card.price}
                     </p>
                     <p className="mb-3 text-[14px] font-normal text-gray-500 dark:text-gray-400 text-left">
-                      {card.general_details.Address}
+                      {truncateText(card.general_details.Address, 40)}
                     </p>
                     <div className="pt-4 pb-2 border-t border-gray-300">
                       <div className="flex justify-between">
@@ -151,7 +173,7 @@ const SoldProperties = () => {
         ) : (
           <div className=" max-h-14 container w-full mx-auto">
             <h4 className="text-gray-600 dark:text-gray-100 text-center font-bold">
-              No property listed by you yet!
+              No property listed yet!
             </h4>
           </div>
         )}

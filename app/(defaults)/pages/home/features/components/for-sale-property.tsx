@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/contexts/auth-provider";
 import { getCloudinaryUrl } from "@/helpers/cloudinary-image-fetch";
-import { fetchPreconstructedProperties } from "@/helpers/product-fetch";
+import { fetchAllProperties } from "@/helpers/product-fetch";
 import { Pagination } from "@/theme/components/pagination/pagination";
 import SectionTitle from "@/theme/components/section-title/section-title";
 import { PreconstructedPropertyDetails } from "@/types/property-preconstructed-types";
@@ -12,9 +12,7 @@ import React, { useEffect, useState } from "react";
 interface PreConstructedProjectProps {
   onEdit: (id: string) => void;
 }
-const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
-  onEdit,
-}) => {
+const ForSaleProperty: React.FC<PreConstructedProjectProps> = ({ onEdit }) => {
   const [propertyItem, setPropertyItem] = useState<
     PreconstructedPropertyDetails[]
   >([]);
@@ -38,7 +36,7 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
         const endpoint = isAuthenticated
           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/my-properties`
           : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/pre-constructed-property`;
-        const data = await fetchPreconstructedProperties(endpoint);
+        const data = await fetchAllProperties(endpoint);
         const featuredProperties = data.filter(
           (item: PreconstructedPropertyDetails) => item.category === "sale"
         );
@@ -93,13 +91,34 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
   return (
     <section className="container mx-auto px-4">
       <div className="flex flex-wrap -mx-4 my-10">
-        <SectionTitle
-          title="Latest For Salet Projects"
-          description="PROPERTY LISTED BY YOU"
-        />
+        <SectionTitle title="Latest For Salet Projects" description="" />
         {loadingData ? (
-          <div className="w-full text-center">
-            <p>Loading...</p>
+          <div className="container">
+            <div className="flex flex-wrap -mx-4 my-10">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div
+                  className={`w-full ${
+                    pathname === "/admin"
+                      ? "lg:w-full xl:w-1/3 "
+                      : "xl:w-1/4 lg:w-1/3 md:w-1/2"
+                  } px-4 mb-8`}
+                  key={index}
+                >
+                  <div key={index} className="border border-gray-200 p-4">
+                    <div className="animate-pulse space-y-2">
+                      <div className="bg-gray-200 h-48"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-16 bg-gray-200 w-full"></div>
+                        <div className="space-x-2 flex">
+                          <div className="h-8 bg-gray-200 w-full"></div>
+                          <div className="h-8 bg-gray-200 w-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : currentItems.length !== 0 ? (
           <div
@@ -172,7 +191,7 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
         ) : (
           <div className=" max-h-14 container mx-auto">
             <h4 className="text-gray-600 dark:text-gray-100 text-center font-bold">
-              No property listed by you yet!
+              No property listed yet!
             </h4>
           </div>
         )}
@@ -186,4 +205,4 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
   );
 };
 
-export default PreConstructedProject;
+export default ForSaleProperty;

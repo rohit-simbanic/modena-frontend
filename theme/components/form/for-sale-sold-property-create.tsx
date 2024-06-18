@@ -43,7 +43,7 @@ interface PropertyFormProps {
   onClose?: () => void;
 }
 
-const PreConstructedPropertyForm: React.FC<PropertyFormProps> = ({
+const ForSaleSoldPropertyForm: React.FC<PropertyFormProps> = ({
   propertyId,
   onClose,
 }) => {
@@ -536,18 +536,14 @@ const PreConstructedPropertyForm: React.FC<PropertyFormProps> = ({
     <div className="max-w-2xl p-8 w-full mx-auto lg:w-[40%] bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-6">
         {propertyId
-          ? "Edit Pre-Constructed Property"
-          : "Create Pre-Constructed Property"}
+          ? "Edit For Sale Property"
+          : "Create For Sale/Sold Property"}
       </h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {errors && <p className="text-red-500 mb-4">{errors.length}</p>}
       {success && (
-        <p className="text-green-500 mb-4">
-          {propertyId
-            ? "Pre-Constructed Property updated successfully!"
-            : "Pre-Constructed Property created successfully!"}
-        </p>
+        <p className="text-green-500 mb-4">Property saved successfully!</p>
       )}
 
       <div className="mb-6">
@@ -609,4 +605,4 @@ const PreConstructedPropertyForm: React.FC<PropertyFormProps> = ({
   );
 };
 
-export default PreConstructedPropertyForm;
+export default ForSaleSoldPropertyForm;

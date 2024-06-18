@@ -28,12 +28,10 @@ export const teamMembers: TeamMember[] = [
   },
 ];
 
-// Main Team component
 const Team: FC = () => {
   return (
     <div className="container mx-auto relative my-5 ">
       <div className="my-10">
-        <h1 className="text-[13px] text-center py-2 font-bold">TEAM</h1>
         <h1 className="text-[30px] text-center font-semibold">
           Our Company Team
         </h1>

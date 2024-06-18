@@ -76,6 +76,8 @@ const config: Config = {
     "w-[200px]",
     "h-[100px]",
     "max-w-3xl",
+    "inset-y-0",
+    "bg-accent/20",
   ],
   plugins: [],
 };

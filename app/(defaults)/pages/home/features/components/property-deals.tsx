@@ -1,12 +1,14 @@
 "use client";
 
-import { fetchProperties } from "@/helpers/product-fetch";
+import { fetchAllProperties } from "@/helpers/product-fetch";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-provider";
 import { getCloudinaryUrl } from "@/helpers/cloudinary-image-fetch";
 import Image from "next/image";
 import { PreconstructedPropertyDetails } from "@/types/property-preconstructed-types";
 import { useEffect, useState } from "react";
+import { truncateText } from "@/helpers/utils";
+import { Pagination } from "@/theme/components/pagination/pagination";
 
 const PropertyDeals: React.FC = () => {
   const [property, setProperty] = useState<PreconstructedPropertyDetails[]>([]);
@@ -26,7 +28,7 @@ const PropertyDeals: React.FC = () => {
         const endpoint = isAuthenticated
           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/my-properties`
           : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/pre-constructed-property`;
-        const data = await fetchProperties(endpoint);
+        const data = await fetchAllProperties(endpoint);
         const soldProperties = data.filter(
           (item: PreconstructedPropertyDetails) => item.category === "sold"
         );
@@ -60,14 +62,38 @@ const PropertyDeals: React.FC = () => {
           Enjoy this amazing amenity that has all you need to jump in
         </p>
       </div>
-      <div className="bg-accent/20">
-        <div className="max-w-[1320px] mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
-          {loadingData ? (
-            <div className="w-full text-center">
-              <p>Loading...</p>
+      <div className="bg-accent/20 mb-7">
+        {loadingData ? (
+          <div className="container">
+            <div className="flex flex-wrap -mx-4 my-10">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div
+                  className={`w-full ${
+                    pathname === "/admin"
+                      ? "lg:w-full xl:w-1/3 "
+                      : "xl:w-1/2 lg:w-1/2 md:w-1/2"
+                  } px-4 mb-8`}
+                  key={index}
+                >
+                  <div key={index} className="border border-gray-200 p-4">
+                    <div className="animate-pulse space-y-2">
+                      <div className="bg-gray-200 h-48"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-16 bg-gray-200 w-full"></div>
+                        <div className="space-x-2 flex">
+                          <div className="h-8 bg-gray-200 w-full"></div>
+                          <div className="h-8 bg-gray-200 w-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ) : currentItems.length !== 0 ? (
-            currentItems.map((card, index) => (
+          </div>
+        ) : currentItems.length !== 0 ? (
+          <div className="max-w-[1320px] mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
+            {currentItems.map((card, index) => (
               <div
                 key={index}
                 className="w-full lg:max-w-[600px] border border-gray-300 lg:flex bg-white shadow-md rounded-lg overflow-hidden"
@@ -97,7 +123,7 @@ const PropertyDeals: React.FC = () => {
                       ${card.price}
                     </div>
                     <p className="text-gray-700 text-left text-xl">
-                      {card.general_details.Address}
+                      {truncateText(card.general_details.Address, 40)}
                     </p>
                   </div>
                   <div className="flex items-center">
@@ -112,17 +138,22 @@ const PropertyDeals: React.FC = () => {
                   </div>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="max-h-14 w-full mx-auto">
-              <h4 className="text-gray-600 dark:text-gray-100 text-center font-bold">
-                No property listed by you yet!
-              </h4>
-            </div>
-          )}
-        </div>
-        <hr className="h-px my-10 bg-gray-400 border-0" />
+            ))}
+          </div>
+        ) : (
+          <div className="max-h-14 w-full mx-auto">
+            <h4 className="text-gray-600 dark:text-gray-100 text-center font-bold">
+              No property listed yet!
+            </h4>
+          </div>
+        )}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        paginate={paginate}
+      />
+      <hr className="h-px my-10 bg-gray-400 border-0" />
     </div>
   );
 };

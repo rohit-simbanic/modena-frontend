@@ -62,11 +62,10 @@ body {
   max-width: 100% !important;
   overflow-x: hidden !important;
 }
-.bg-banner {
-  background-image: url("/public/images/banner.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
+
 .banner-bg {
   @apply bg-[url('../public/images/banner.jpg')] bg-slate-900 bg-no-repeat bg-center bg-cover;
+}
+.skeleton {
+  @apply animate-pulse bg-gray-300 dark:bg-gray-700;
 }

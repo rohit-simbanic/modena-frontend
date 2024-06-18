@@ -1,10 +1,9 @@
 "use client";
 
-import PreConstructedProject from "@/app/(defaults)/pages/home/features/components/pre-constructed-project";
+import ForSaleProperty from "@/app/(defaults)/pages/home/features/components/for-sale-property";
 import SoldProperties from "@/app/(defaults)/pages/home/features/components/sold-properties";
 import withAuth from "@/helpers/with-auth-hoc";
-import PreConstructedPropertyForm from "@/theme/components/form/pre-constructed-property-create";
-import PropertyForm from "@/theme/components/form/property-create";
+import ForSaleSoldPropertyForm from "@/theme/components/form/for-sale-sold-property-create";
 import React, { useState } from "react";
 
 const Page = () => {
@@ -25,7 +24,7 @@ const Page = () => {
   };
   const tabs = [
     {
-      name: "Pre-Constructed Property",
+      name: "Create Sale/Sold Property",
       icon: (
         <svg
           className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400"
@@ -38,14 +37,14 @@ const Page = () => {
         </svg>
       ),
       content: (
-        <PreConstructedPropertyForm
+        <ForSaleSoldPropertyForm
           propertyId={propertyId}
           onClose={handleClosePreconstructed}
         />
       ),
     },
     {
-      name: "Sold Properties",
+      name: "Sold Properties List",
       icon: (
         <svg
           className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400"
@@ -61,7 +60,7 @@ const Page = () => {
       content: <SoldProperties />,
     },
     {
-      name: "Pre-constructed Properties",
+      name: "For Sale Properties List",
       icon: (
         <svg
           className="w-4 h-4 me-2 text-gray-400 dark:text-gray-500"
@@ -73,9 +72,7 @@ const Page = () => {
           <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
         </svg>
       ),
-      content: (
-        <PreConstructedProject onEdit={(id: string) => handleEdit(id, 0)} />
-      ),
+      content: <ForSaleProperty onEdit={(id: string) => handleEdit(id, 0)} />,
     },
   ];
 

@@ -8,7 +8,6 @@ const Blog: FC = () => {
   return (
     <div className="container mx-auto relative py-10 px-4 md:px-8 lg:px-12">
       <div className="max-w-7xl mx-auto grid">
-        <p className="text-left text-[15px] font-bold">BLOG</p>
         <h1 className="text-left text-[30px] my-2 font-semibold">
           Stay Updated
         </h1>

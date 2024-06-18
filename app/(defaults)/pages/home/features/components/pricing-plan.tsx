@@ -4,7 +4,6 @@ import React, { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-// Define TypeScript interface for pricing plan data
 interface PricingPlan {
   id: number;
   title: string;
@@ -13,7 +12,6 @@ interface PricingPlan {
   features: string[];
 }
 
-// Mock data for pricing plans
 const pricingData: PricingPlan[] = [
   {
     id: 1,
@@ -49,7 +47,6 @@ const pricingData: PricingPlan[] = [
   },
 ];
 
-// Reusable PricingCard component
 const PricingCard: FC<{ plan: PricingPlan }> = ({ plan }) => (
   <div className="max-w-sm mx-auto my-6 bg-white border-t p-5 rounded-lg shadow-xl border border-gray-300 dark:border-gray-700">
     <Link href="#">
@@ -84,11 +81,9 @@ const PricingCard: FC<{ plan: PricingPlan }> = ({ plan }) => (
   </div>
 );
 
-// Main Pricing component
 const Pricing: FC = () => (
   <div className="container mx-auto relative py-10 px-4">
     <div className="my-5 text-center">
-      <h1 className="text-[13px] py-1 font-bold">PRICING</h1>
       <h1 className="text-[30px]">Simple Plans Pricing</h1>
       <p className="my-1 text-[15px] text-gray-400">
         Enjoy this amazing amenity that has all you need to jump in

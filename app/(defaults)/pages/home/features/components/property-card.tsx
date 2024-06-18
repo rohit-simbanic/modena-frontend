@@ -2,10 +2,12 @@
 
 import { useAuth } from "@/contexts/auth-provider";
 import { getCloudinaryUrl } from "@/helpers/cloudinary-image-fetch";
-import { fetchPreconstructedProperties } from "@/helpers/product-fetch";
+import { fetchAllProperties } from "@/helpers/product-fetch";
+import { truncateText } from "@/helpers/utils";
 import { Pagination } from "@/theme/components/pagination/pagination";
 import { PreconstructedPropertyDetails } from "@/types/property-preconstructed-types";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 interface PreConstructedProjectProps {
@@ -36,7 +38,7 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
         const endpoint = isAuthenticated
           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/my-properties`
           : `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/property/pre-constructed-property`;
-        const data = await fetchPreconstructedProperties(endpoint);
+        const data = await fetchAllProperties(endpoint);
         const featuredProperties = data.filter(
           (item: PreconstructedPropertyDetails) => item.category === "sale"
         );
@@ -90,26 +92,49 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
   return (
     <section className="container mx-auto px-4">
-      <div className="flex flex-wrap -mx-4 my-10">
+      <div className="flex flex-col -mx-4 mt-10">
         <div className="my-5 mx-auto w-full">
-          <h1 className="text-[14px] text-center py-2 font-bold">FEATURED</h1>
           <h1 className="text-[30px] text-center ">Best Property Deals</h1>
           <p className="my-1 text-[15px] text-center text-gray-400">
             Enjoy this amazing amenitie that has all you need to jump in
           </p>
         </div>
         {loadingData ? (
-          <div className="w-full text-center">
-            <p>Loading...</p>
+          <div className="container">
+            <div className="flex flex-wrap -mx-4 my-10">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div
+                  className={`w-full ${
+                    pathname === "/admin"
+                      ? "lg:w-full xl:w-1/3 "
+                      : "xl:w-1/4 lg:w-1/3 md:w-1/2"
+                  } px-4 mb-8`}
+                  key={index}
+                >
+                  <div key={index} className="border border-gray-200 p-4">
+                    <div className="animate-pulse space-y-2">
+                      <div className="bg-gray-200 h-48"></div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-16 bg-gray-200 w-full"></div>
+                        <div className="space-x-2 flex">
+                          <div className="h-8 bg-gray-200 w-full"></div>
+                          <div className="h-8 bg-gray-200 w-full"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         ) : currentItems.length !== 0 ? (
           <div
-            className={`grid grid-cols-1 gap-6 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 ${
+            className={`grid grid-cols-1 gap-5 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 ${
               pathname === "/admin" ? "xl:grid-cols-3" : "xl:grid-cols-4"
             }  px-12 py-12`}
           >
             {currentItems.map((card, index) => (
-              <div key={index} className="mb-8">
+              <Link href={card.listing_id} key={index} className="mb-2">
                 <div className="bg-white rounded-lg shadow-xl border border-gray-300 dark:border-gray-700">
                   <div className="h-[225px] overflow-hidden rounded-t-lg relative">
                     <Image
@@ -135,7 +160,7 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
                       ${card.price}
                     </p>
                     <p className="mb-3 text-[14px] font-normal text-gray-500 dark:text-gray-400 text-left">
-                      {card.general_details.Address}
+                      {truncateText(card.general_details.Address, 40)}
                     </p>
                     <div className="pt-4 pb-2 border-t border-gray-300">
                       <div className="flex justify-between">
@@ -167,24 +192,23 @@ const PreConstructedProject: React.FC<PreConstructedProjectProps> = ({
                     )}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
           <div className=" max-h-14 w-full mx-auto">
             <h4 className="text-gray-600 dark:text-gray-100 text-center font-bold">
-              No property listed by you yet!
+              No property listed yet!
             </h4>
           </div>
         )}
       </div>
-      {pathname !== "/" && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          paginate={paginate}
-        />
-      )}
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        paginate={paginate}
+      />
     </section>
   );
 };

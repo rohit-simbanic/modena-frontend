@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 
-// Define TypeScript interface for card data
 interface CardData {
   id: number;
   amount: string;
@@ -8,7 +7,6 @@ interface CardData {
   description: string;
 }
 
-// Mock data for like cards
 const cardData: CardData[] = [
   {
     id: 1,
@@ -33,7 +31,6 @@ const cardData: CardData[] = [
   },
 ];
 
-// Reusable LikeCard component
 const LikeCard: FC<{ card: CardData }> = ({ card }) => (
   <div className="max-w-sm mx-auto my-6">
     <div className="relative overflow-hidden rounded-t-lg bg-accent/20 p-6">
@@ -46,7 +43,6 @@ const LikeCard: FC<{ card: CardData }> = ({ card }) => (
   </div>
 );
 
-// Main Like component
 const DataInfoComponent: FC = () => {
   return (
     <div className="bg-primary">
